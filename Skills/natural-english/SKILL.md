@@ -15,7 +15,7 @@ Prose bound for a document or file, or handed over to be polished, gets two edit
 
 Hold these through steps 2 to 4. The first two outrank every catalogue entry and voice test; when a fix would break either, the fix is not made.
 
-- Meaning stays. No claim about the subject changes truth value. A sentence that carries no fact may go, and a judgment you hold may be added; a fact you do not have is never added. When a fix calls for a source, a number, or a mechanism, use one you have; with none in hand, delete the sentence.
+- Meaning stays. No claim about the subject changes truth value. In a rewrite, preserve the author's stance, including deliberate neutrality; clarify judgments without adding, removing, or reversing them. Original drafting may include your own reasoned judgment. Delete text only when it carries no fact or stance, and never add a fact you do not have. When a fix needs a source, number, or mechanism, use one you have; without it, preserve the author's meaning in a rewrite or omit the unsupported claim in an original draft.
 - Only your own text. The catalogue and the voice tests apply to prose you are writing now. Quotations, code, commands and their output, file contents, templates, and anything the user or a tool supplied are reproduced byte for byte, dashes and curly quotes included.
 - The author's register stays. Formal, casual, terse, or technical, the voice tests adjust within it and never override it.
 - A fix that trips another entry is not done. Swapping a dash for parentheses is the usual case.
@@ -24,7 +24,7 @@ Hold these through steps 2 to 4. The first two outrank every catalogue entry and
 
 Text with every tell removed and no voice still reads as machine output, so these tests carry the same weight as the catalogue.
 
-- **Take positions.** A balanced, unweighted list of pros and cons is a tell. When you lay out facts, say what you make of them, good, a problem, a surprise. If a paragraph that evaluates something ends without your verdict, add one.
+- **Take positions.** In original drafting, an evaluative paragraph ends with a reasoned verdict, not an unweighted list of pros and cons. In a rewrite, make the author's existing verdict clear; deliberate neutrality stays neutral.
 - **Vary sentence length.** In any run of four or more sentences whose lengths sit in a narrow band, break one short or let one run long.
 - **Admit mixed reactions.** One unqualified adjective is weaker than a judgment that holds a quality beside its cost. At each one-word verdict, ask whether a second, conflicting reaction is real for you. If it is, state both. "The migration was fine" becomes "The migration was fine, and it cost us a week of frozen deploys."
 - **Allow first person.** Where you express a judgment, observation, or experience, you may write "I". Writing "I" costs no professionalism. This is permission and no more; a register that excludes first person wins. If the text has bent into passive or impersonal constructions to avoid saying who thinks something, restore the person.

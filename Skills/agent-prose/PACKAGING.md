@@ -10,13 +10,13 @@ Four fields are in use across the repo. Add no others.
 
 - **`name`.** Matches the directory name.
 - **`description`.** One or two sentences, written by the rules below.
-- **`disable-model-invocation`.** Present on every skill, directly after `description`, as an explicit `true` or `false`, so listed or manual is a one-word toggle. `true` is the harness's `hide` switch, which drops the skill from the model's list but keeps it loaded. The only field that changes how a skill is reached.
+- **`disable-model-invocation`.** Present on every skill, directly after `description`, as an explicit `true` or `false`, so listed or manual is a one-word toggle. `true` is the harness's `hide` switch, which drops the skill from the model's list but keeps it loaded. This selects listed or manual mode, not access permissions.
 - **`allowed-tools`.** Present on `linear` and `lifecycle` as a `Bash(<cmd>:*)` list. The harness documents no behavior for it: a declaration for other hosts, never a mechanism a skill body can lean on.
 
 ## How a skill is reached
 
 - **Listed skill.** Every session's system prompt, subagent sessions included, carries one line per listed skill: `- <name>: <description>`. That line is all the model sees until it reads `skill://<name>`.
-- **Manual skill.** A person runs `/skill:<name>`, which exists only while the harness setting `skills.enableSkillCommands` is on and which injects the body with the skill directory attached so relative links resolve.
+- **Manual skill.** A person runs `/skill:<name>`, which exists only while the harness setting `skills.enableSkillCommands` is on and which injects the body with the skill directory attached so relative links resolve. User-only invocation is a policy, not access control: hidden skills and their resources remain readable through `skill://`.
 - **Sibling files.** The house form is a relative markdown link from the body, `[GLOSSARY.md](GLOSSARY.md)`, resolved against the skill directory; from elsewhere, `skill://<name>/<FILE>.md`. Nothing loads a sibling automatically: it is reached by its pointer or not at all.
 - **Context files.** These load into the opening project context on every session and pay standing cost. `~/.omp/agent/AGENTS.md` outranks every other. A native project file is read only from the nearest non-empty `.omp/` directory on the walk from the working directory to the repository root; a standalone `AGENTS.md` loads at every depth of that walk, farther ancestors first. `AGENTS.md` files below the working directory do not load; the agent gets their paths and an instruction to read them before editing there. `omp://context-files.md` holds the provider table and settles any case where a file's location or format decides whether it loads. Inside a context file, `@path` inlines the target before injection, so it is not a pointer; a prose "read X when Y" is.
 - **`RULES.md`.** Sticky at two native locations only: the user agent directory and that same nearest non-empty project `.omp/`. It loads as an always-apply rule re-attached near the current turn, and a user copy shadows a project copy rather than joining it. It holds a few hard requirements and nothing else.
@@ -45,7 +45,7 @@ Split only when the halves have triggers users state differently, or when the la
 
 ## Shared material
 
-Support that several skills use lives in one plain file with no frontmatter. When every consumer is a listed skill, the file sits inside the skill that owns the meaning, linked relatively from there and reached from the others by `skill://<owner>/<FILE>.md` behind a reach condition. When any consumer is a manual skill, the file sits outside the skill system at a path every consumer can name, because a manual skill's directory is reached only through the person who invoked it. Never create a third skill to hold shared text: listed, it pays standing cost for a file; manual, only a person can reach it.
+Support that several skills use lives in one plain file with no frontmatter, inside the skill that owns the meaning. Link it relatively from there and reach it from other skills by `skill://<owner>/<FILE>.md` behind a reach condition, regardless of either skill's listed or manual mode. Reading a support file does not invoke its owning skill. Never create a third skill solely to hold shared text.
 
 ## Menu skill
 

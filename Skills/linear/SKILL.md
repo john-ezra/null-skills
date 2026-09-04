@@ -9,7 +9,7 @@ How to drive the `linear` CLI. What to track, when to move an issue, and where d
 
 ## The repo pin
 
-A repo is Linear-tracked when its root holds `.linear.toml`, which pins the workspace and team so commands need no `--workspace` or `--team` flags:
+A repo is Linear-tracked when its root holds `.linear.toml`, which supplies the default workspace and team for commands that use them:
 
 ```toml
 workspace = "<workspace-slug>"
@@ -77,7 +77,7 @@ linear issue comment add WEB-12 --attach ./screenshot.png
 
 ## Writes
 
-- **Confirm the target first.** With no `.linear.toml` at the repo root, a write lands in whatever workspace `linear auth default` last set; pass `--workspace <slug>` and `--team <key>` on every write instead of trusting it. Then confirm the identifier is the thing you mean: `linear issue view WEB-12 --json` and read the title before `issue update`, `comment add`, or `relation add` touches it.
+- **Confirm the target first.** With no `.linear.toml` at the repo root, pass `--workspace <slug>` explicitly on writes instead of trusting whatever workspace `linear auth default` last set. Add `--team <key>` only when the command's help documents it and its meaning matches the intended operation. `issue comment add` has no `--team`; `document update --team` changes the document's attachment, not its workspace scope. Then confirm the identifier in the intended workspace is the thing you mean: `linear issue view WEB-12 --json` and read the title before `issue update`, `comment add`, or `relation add` touches it.
 - **Replace a body from its current version.** `document update --content-file` and the `projectUpdate(content:)` fallback replace the whole body, so a draft written from anything but the current body erases edits made in Linear. Fetch it (`linear document view <id> --json`; for a project overview, query `project(id:) { content }` through `linear api`), make the edit on that copy, write it, then fetch again and diff against what you sent. `document update` stops when inline comments would lose their anchors; `--force` overrides, and only after the user says so.
 
 ## Traps

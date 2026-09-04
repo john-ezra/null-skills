@@ -34,7 +34,9 @@ Only judgments reach the user. A fact the environment can answer (the filesystem
 
 ## Capture
 
-Record a decision the moment the user confirms it, and a branch the moment they park it, in the document being shaped. When there is none, ask before the first question whether to create one; recommend yes when the tree is too large to hold in a reply. A brainstorm kept in chat carries its decided and parked lists in each reply. Batching capture to the end is how decisions get lost, and a lost decision reopens a settled prerequisite.
+Before the first question, establish capture permission once. Use the request when it explicitly authorizes document edits or asks for discussion only. Otherwise, ask whether to update the existing document; when there is none, ask whether to create one, recommending yes when the tree is too large to hold in a reply. Agreement with a proposed decision is not permission to write a document.
+
+With capture permission, record each decision as the user confirms it and each branch as they park it, without asking again for each edit. Without permission, leave documents untouched and carry the decided and parked lists in each reply. Capture immediately in the chosen place, not at the end.
 
 ## Done
 

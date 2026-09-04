@@ -8,9 +8,9 @@ Write or audit documents that direct an agent, so that every run follows the sam
 
 ## Classify the request
 
-- **A path was supplied.** Take the audit path below.
-- **No path.** Draft or revise the document in hand with the drafting steps.
-- **Standing personal conventions.** Take the personal-conventions path.
+- **Record or update personal conventions.** Take the personal-conventions path.
+- **Review or audit.** Take the audit path, whether the target is named by a path or established in the conversation.
+- **Create or revise.** For other agent-facing documents, take the drafting steps.
 - **The target is a skill.** Read [PACKAGING.md](PACKAGING.md) before deciding or judging its frontmatter, listed or manual mode, description, split, shared files, or menu behavior.
 - **A distinction matters.** Read [GLOSSARY.md](GLOSSARY.md) for every audit, and during drafting whenever a decision turns on the difference between two of its terms (pointer against link) or a term used below is one you could not define.
 - **Reading cannot settle whether a sentence or structure changes what the model does.** Run [BLIND-COMPARISON.md](BLIND-COMPARISON.md); assumed defaults are not evidence.

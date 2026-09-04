@@ -4,15 +4,19 @@ description: Find a bug's cause by experiment before fixing it. Use when asked t
 disable-model-invocation: false
 ---
 
-Run a failure down to a stated cause with the evidence that selected it, then prove the repair. The method is experiments against a running reproduction, each with its prediction written before it runs.
+Run a failure down to a stated cause with the evidence that selected it. Use observations and experiments against a running reproduction, each with its prediction written before it runs.
+
+## Mode
+
+The request decides the mode. A request to explain why a failure happens or to diagnose it is **diagnosis-only**; a request to fix or repair it is **repair**. In diagnosis-only mode, establish the cause, recommend a repair, then clean up and report without implementing the repair or adding permanent regression tests. Any tests or code changes needed for diagnosis are temporary. Repair mode continues through repair and verification. Neither mode grants authority to commit.
 
 ## 1. Decide whether to investigate
 
-A report that pins both the faulting location and the mechanism, a stack trace into a line whose defect you can name on sight, takes the direct path: build the loop in step 2, skip steps 3 to 5, repair, and go to step 6. On that path the loop is the bare case, its first red run is the saved symptom, and the report's trace is the observation that selected the cause; record it as the probe. Anything less, including a failure with several plausible causes, gets the full procedure.
+A report that pins both the faulting location and the mechanism, a stack trace into a line whose defect you can name on sight, takes the direct path: build the loop in step 2 and skip steps 3 to 5. On that path the loop is the bare case, its first red run is the saved symptom, and the report's trace is the observation that selected the cause; record it as an inspection probe. The loop must fail at the named line by the stated mechanism, or the case goes to step 3. Once that evidence establishes the cause, diagnosis-only work goes to step 7 with a recommended repair; repair work goes to step 6. Anything less, including a failure with several plausible causes, gets the full procedure.
 
 Read the project's glossary, local context document, and ADRs for the affected area, so candidates use its terms and do not reopen settled decisions. For unfamiliar code, dispatch read-only `scout` subagents in one batch to map the implicated path, its callers, and its tests.
 
-Done when the case is labeled direct path or investigation, and for an investigation the implicated path and its entry points are mapped.
+Done when the mode is diagnosis-only or repair, the case is labeled direct path or investigation, and for an investigation the implicated path and its entry points are mapped.
 
 ## 2. Build the loop
 
@@ -48,7 +52,7 @@ Done when the loop demonstrates the reported failure at a recorded rate and ever
 
 ## 4. List candidate causes
 
-Write three to five candidate mechanisms that would produce the bare case, each with a prediction stated as an intervention and the observation expected if it is true: "if the cache returns a stale row, then reading `row.updated_at` at the boundary in `sync()` will show a timestamp older than the write in the fixture." A candidate no observation could refute is refined until it has a prediction, or dropped.
+Write three to five candidate mechanisms that would produce the bare case, each with a prediction naming what an inspection would observe or what would happen if an experiment changed one condition: "if the cache returns a stale row, then reading `row.updated_at` at the boundary in `sync()` will show a timestamp older than the write in the fixture." A candidate no observation could refute is refined until it has a prediction, or dropped.
 
 Rank by plausibility, probe cost, and the probe's discriminating power together.
 
@@ -58,21 +62,21 @@ Done when every candidate has a falsifiable prediction a single probe can check.
 
 ## 5. Probe one condition at a time
 
-Every inspection and experiment answers one named prediction from the list and changes exactly one condition.
+Every probe answers one named prediction from the list. An inspection observes state without changing a condition; an experiment changes exactly one condition and observes the result.
 
 - **Live inspection first.** Debugger, REPL, or runtime inspector reading state at the boundary the prediction names.
 - **Tagged logs second.** When live inspection cannot reach the moment, add a log line at the decision boundary that separates candidates, and only there. Choose one **tag** for the investigation, `DBG-<slug>`; start every temporary log message with it and put it in a comment on every temporary code or config edit.
-- **Record the verdict.** After each probe: the prediction, the one condition changed, the observation, whether it held.
+- **Record the verdict.** After each probe: inspection or experiment, prediction, observation, and whether it held. For an inspection, name the state inspected and record that no condition changed; for an experiment, name the one condition changed.
 - **Revert before moving on.** A temporary change whose prediction failed comes out before the next probe starts.
 - **Prototype only for reach.** Build a disposable harness when the real path cannot be made runnable in a small experiment, or one mechanism needs isolating, such as whether a regex backtracks on one input. Its result is a lead; proof comes from the loop or the real path under inspection.
 
-When the symptom is elapsed time, memory, or throughput, measure before touching anything: run the slow workload under a profiler, tracer, query planner, allocation sampler, or plain timer, and keep that output as the baseline. The dominant measured cost picks the candidates; logs are the weakest evidence here. Every remedy does one of four things to that cost: **skip it** (drop unneeded work, shrink the input, defer until something uses it); **pay it once** (index, cache with the invalidation rule written beside it, batch a fixed cost across calls); **pay it elsewhere** (move required work out of the critical moment); **pay it twice** (duplicate work, justified only when tail latency matters and capacity is spare). Per candidate, change one factor, run the same workload through the same tool, and keep the change only when the two outputs show the difference the prediction named.
+When the symptom is elapsed time, memory, or throughput, measure before touching anything: run the slow workload under a profiler, tracer, query planner, allocation sampler, or plain timer, and keep that output as the baseline. The dominant measured cost picks the candidates; logs are the weakest evidence here. Every remedy does one of four things to that cost: **skip it** (drop unneeded work, shrink the input, defer until something uses it); **pay it once** (index, cache with the invalidation rule written beside it, batch a fixed cost across calls); **pay it elsewhere** (move required work out of the critical moment); **pay it twice** (duplicate work, justified only when tail latency matters and capacity is spare). An inspection checks the predicted cost in the measured output without changing the workload. For an experiment, change one factor and run the same workload through the same tool; retain the change for repair only when the two outputs show the difference the prediction named.
 
-Done when one candidate's prediction has held and the competitors' have failed or been made irrelevant, so the cause can be stated beside the probe that showed it.
+Done when one candidate's prediction has held and the competitors' have failed or been made irrelevant, so the cause can be stated beside the probe that showed it. Diagnosis-only work goes to step 7 with a recommended repair; repair work continues to step 6.
 
-## 6. Lock the repair down
+## 6. Lock the repair down, repair mode only
 
-A change that turns the loop green without a probe that showed why is a workaround; go back to step 5. On the direct path the probe is the report's trace, and it holds only while the loop went red at the named line and green after the one repair; a repair that needs more than that has left the direct path, so go to step 3. A repair that needs its route written down gets one by `plan` first.
+A change that turns the loop green without a probe that showed why is a workaround; go back to step 5. On the direct path the probe is the report's trace confirmed by the red loop; the one repair must turn it green. A repair that needs more than that has left the direct path, so go to step 3. A repair that needs its route written down gets one by `plan` first.
 
 `software-design` finds the **real seam**: the narrowest test location that still recreates the callers, interactions, and sequence the bare case needs, or that none exists. `test-quality` shapes the regression test there.
 
@@ -84,24 +88,24 @@ Done when the original scenario is correct on its original surface and either th
 
 ## 7. Clean up and learn
 
-- **Tag swept.** `grep` for the tag across the repository returns nothing.
-- **Rejected changes gone.** No workaround, config edit, or exploratory change from a failed probe remains.
-- **Prototypes handled.** Every disposable harness is deleted or moved under a diagnostic-only name such as `scratch/` or `tools/diag/`.
-- **Cause recorded.** The mechanism, in one or two sentences with the probe that showed it, in the commit message and, when there is a PR, in its body's What & why per `pr`. "Fixed the bug" is not a cause.
+- **Tag swept.** If a tag was used, `grep` for it across the repository returns nothing; otherwise record that no tagged instrumentation was added.
+- **Temporary changes gone.** Remove diagnostic logging, config edits, exploratory changes, and workarounds. In diagnosis-only mode, restore every temporary source and test change, even when its prediction held.
+- **Prototypes removed.** Delete disposable harnesses and other diagnostic-only artifacts after recording the evidence needed for the report.
+- **Cause recorded.** Write the mechanism in one or two sentences with the probe that showed it in the report. If a commit or PR is separately requested, include the cause in the commit message or the PR body's What & why per `pr`. "Fixed the bug" is not a cause.
 - **Prevention asked.** A written answer to what would have prevented this defect or caught it earlier: a test at the missing level, a stricter type, a removed special case, a seam that exists now.
 - **Design handed on.** When the answer is structural (a missing seam, knotted callers, unmarked coupling), write the recommendation with the seams that could not recreate the bug, the callers involved, and the coupling that hid the cause, and hand it to `software-design`.
 
-Done when every item holds.
+Done when every item holds and the mode's outcome is recorded: an evidence-backed cause and recommended repair without a production fix or permanent regression test for diagnosis-only work, or step 6's verified repair for repair work.
 
 ## Report
 
-Each claim points at the path, command, artifact, or user-supplied text that supports it:
+State the mode. Each claim points at the path, command, artifact, or user-supplied text that supports it:
 
 1. **Loop.** The exact command, test, script, or user procedure; the path it exercises; the symptom it asserts; one actual run's output. For a user-run procedure, the artifact requested back.
 2. **Observed and bare case.** The original symptom, its repeatability or failure rate, the bare case, and which retained parts were proven necessary.
-3. **Candidates.** Three to five in rank order, each with its prediction and, where cost or evidence moved it, why it sits there. The user's correction, or that none came.
-4. **Probes.** For each: prediction, the one changed condition, observation, verdict, reverted or not. For performance work, baseline and follow-up measurements under the same workload, side by side.
-5. **Repair.** The change; the seam and the observed red-then-green, or why no real seam exists; the result of the original scenario on its original surface.
-6. **Completion.** Tag sweep result, prototype disposition, the cause as written for the change record, and the prevention answer or `software-design` handoff.
+3. **Candidates.** For an investigation, three to five in rank order, each with its prediction and, where cost or evidence moved it, why it sits there. The user's correction, or that none came. For the direct path, identify the trace and matching loop failure instead of inventing a candidate list.
+4. **Probes.** For each: inspection or experiment, prediction, state inspected or the one changed condition, observation, and verdict. Record no condition changed for an inspection; for an experiment, state whether the change was reverted. For performance work, include the measured baseline and, when an experiment ran, follow-up measurements under the same workload, side by side.
+5. **Cause and repair.** The selected cause and its causal evidence. In diagnosis-only mode, the recommended repair and what would verify it, clearly marked as unimplemented and unverified. In repair mode, the change, the seam and observed red-then-green or why no real seam exists, and the result of the original scenario on its original surface.
+6. **Completion.** Tag sweep result or why none was needed, temporary-change and prototype cleanup, the recorded cause, and the prevention answer or `software-design` handoff.
 
 Observations and untested candidates stay visibly separate; a causal conclusion appears only beside the probe evidence that selected it.

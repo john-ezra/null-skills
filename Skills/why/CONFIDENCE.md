@@ -16,7 +16,7 @@ An attributable record gives the reason in its own words: commit message, PR des
 Several independent indirect signals point to the same reason and no material record contradicts them. Two is not several; independent means different authors or systems, so a commit and the PR that merged it are one signal.
 
 - **Cite.** Every link in the chain, each to its record.
-- **Say.** Strength attributed to the evidence, never to a speaker: "The evidence points to the 2024-03-02 outage: the incident (INC-118), the fix landing two days later (abc123), and the alert threshold lowered in the same PR (#301)." Never "the team wanted" or "the author intended".
+- **Say.** Strength attributed to the evidence, never to a speaker. For example, with three independently produced records: "The evidence points to the 2024-03-02 outage: the operations incident records exhausted connections (INC-118), a support agent independently logged matching customer failures (SUP-42), and the application maintainer's later patch limits concurrent connections (abc123)." Never "the team wanted" or "the author intended".
 - **Goes in.** Interpretation.
 
 ### Inferred

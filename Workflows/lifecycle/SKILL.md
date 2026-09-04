@@ -5,7 +5,7 @@ disable-model-invocation: true
 allowed-tools: Bash(linear:*)
 ---
 
-How the skills bind to Linear. Each skill produces an artifact; this reference says where it lives and which state moves. Rigor for each artifact is the skill's; command flags and traps are the `linear` skill's. Every Linear write here happens on the user's word.
+How the skills bind to Linear. Each skill produces an artifact; this reference says where it lives and which state moves. Rigor for each artifact is the skill's; command flags and traps are the `linear` skill's. Every Linear write here happens on the user's word. Approval of spec content is not permission to publish it or change Linear state unless the user's request also authorizes those writes.
 
 ## The map
 
@@ -23,7 +23,8 @@ How the skills bind to Linear. Each skill produces an artifact; this reference s
 |---|---|---|---|
 | Work arrives | sizing rule below | an issue or a project | `Ideas` if it is not yet sized or specced |
 | Project shaped | `shape`, then `intent` | `agent-docs/intents/<slug>.md`, landed on main | project created at `planned`: name is the H1, description is the Goal's first sentence, overview is the link to the file on main, team and `--initiative` are the venture's |
-| Intent sliced | `spec` | issue descriptions, the `Intent:` line dropped since `--project` carries it | placeholder to `Backlog`, written spec to `Todo`, each edge `relation add <id> blocked-by <blocker>`, one label and a priority each |
+| Intent sliced | `spec` | issue descriptions, the `Source:` line dropped since `--project` carries the intent association | placeholder to `Backlog`, approved spec to `Todo`, each edge `relation add <id> blocked-by <blocker>`, one label and a priority each |
+| Standalone requirement approved | `spec`, standalone path | team-level issue description with a `Source:` link to the approved report or requirement in the first line, no project or intent required | approved spec to `Todo`, one label and a priority |
 | Issue picked up | `plan`, unless trivial by its own test | Linear Document on the issue, title `Plan` | issue to `In Preparation`; the project's first pickup also moves it to `started` |
 | Building | | branch, as the repo makes branches | issue to `In Flight` |
 | PR opens | `pr` | the PR | issue to `In Review` |
@@ -52,7 +53,7 @@ The close-out comment is one line, `Done in PR #NN (<merge sha>).`, posted with 
 ## Rules
 
 - Sizing. One session of work is an issue carrying a spec; more is a project carrying an intent. Same size test as a `spec` slice.
-- An unplanned issue attaches to an active project only when it blocks that project's stop criteria. Otherwise it is team-level with no project, and its why is the bug report or GitHub issue, linked in the first line of the body.
+- An unplanned issue attaches to an active project only when it blocks that project's stop criteria. Otherwise it is team-level with no project. Use `spec`'s standalone path from its approved bug report, GitHub issue, or explicit requirement, and keep a link to that source in the first line of the body. Once the spec is approved, publish it and move the issue to `Todo` only on the user's word.
 - Promotion runs both ways. An issue that outgrows a session gets an intent and a project with itself as the first spec; a project that collapses to one slice is canceled and the issue kept.
 - Each fact has one home. The intent cites the initiative for standing constraints. Blocking order is native relations, never prose in a body. The intent is linked from Linear, never copied into it.
 - Publish blockers first, so every edge names a real id.

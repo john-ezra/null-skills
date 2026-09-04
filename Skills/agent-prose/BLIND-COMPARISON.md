@@ -26,7 +26,7 @@ Read the outputs and histories yourself. For each run, decide whether the instru
 
 ## 7. Decide
 
-Promote the variant only when the blinded results support the stated benefit with no material regression on any other criterion. A tie, inconsistent scores, a regression, an ambiguous criterion, or a contaminated run set means the experiment is revised (sharper criteria, a cleaner task, more runs) and rerun, never picking the prose you prefer.
+Promote the variant only when valid blinded results support the stated benefit with no material regression on any other criterion. A valid comparison that shows a tie, inconsistent scores, or a regression ends with no demonstrated benefit: retain the existing instruction and report the result. An ambiguous criterion or contaminated run set is not a valid comparison; correct the defect and rerun. More runs are optional when a specific unresolved question justifies them, not a requirement to keep trying until a variant wins. Done when the decision is to promote, retain the existing instruction, or rerun a comparison whose validity defect is named.
 
 ## Contamination
 
@@ -40,4 +40,4 @@ Any of these disqualifies the run set, and the comparison starts over from step 
 
 ## Record
 
-Report the experiment in this order: the behavioral claim; the task as sent; the hidden criteria; the isolation arrangement and the constants held; the sanitized result of each run, cited by label, artifact, and trace; the judge's evidence and recommendation; your own verification against artifacts and histories; the threats to validity you could not remove; and the decision to promote or to revise. Done when the record is complete and the decision follows from it.
+Report the experiment in this order: the behavioral claim; the task as sent; the hidden criteria; the isolation arrangement and the constants held; the sanitized result of each run, cited by label, artifact, and trace; the judge's evidence and recommendation; your own verification against artifacts and histories; the threats to validity you could not remove; and the decision to promote, retain the existing instruction, or correct and rerun an invalid comparison. Done when the record is complete and the decision follows from it.

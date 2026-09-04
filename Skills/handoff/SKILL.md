@@ -21,7 +21,7 @@ Sections, in order:
 - **Mission.** What is being attempted and why, 2 to 3 sentences. Name the issue/PR if one exists.
 - **Settled.** Decisions already made, each as one line *linking to where the decision lives* (a design document, an issue, a commit). Never restate a decision the link carries; a restatement goes stale, the link doesn't. A decision that lives only in this conversation is written out here; this file is its only record.
 - **Tried and rejected.** Approaches attempted this session that failed or were abandoned, and why. This is the one thing no other artifact records; losing it means the successor re-walks dead ends. Be specific: what was tried, what happened, why it's out.
-- **Current state.** Where the work stands and where the changes live (branch, commit, uncommitted files), then the blocker or failure *verbatim*: paste the exact error text, failing test name, or command output, not a paraphrase.
+- **Current state.** Where the work stands. If resuming depends on a location not already identified in this handoff, name the repository and checkout, document, issue, or other resource. Include branch, commit, and uncommitted files when relevant; conversation-only work needs no external location. Then give the blocker or failure *verbatim*: paste the exact error text, failing test name, or command output, not a paraphrase.
 - **Next action.** The exact first move: a command to run, a file and the change to make, a question to answer. The successor should be able to act without re-deriving anything.
 - **Open questions.** Each with who or what can resolve it (the user, a file to read, an experiment to run).
 

@@ -78,8 +78,8 @@ linear initiative archive --bulk <id1> <id2>
 
 ```bash
 # Add label to issue
-linear issue update DEV-123 --label "Bug"
+linear issue update DEV-123 --add-label "Bug"
 
 # Add multiple labels
-linear issue update DEV-123 --label "Bug" --label "High Priority"
+linear issue update DEV-123 --add-label "Bug" --add-label "High Priority"
 ```

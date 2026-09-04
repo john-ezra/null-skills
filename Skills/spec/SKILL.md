@@ -1,20 +1,24 @@
 ---
 name: spec
-description: Write specs from an intent. Use when an intent is ready to break into work items, when its frontier needs slicing or re-slicing after work lands, or when specs need splitting, merging, re-scoping, or killing before pickup.
+description: Write specs from an intent or an approved standalone report or requirement. Use when an intent is ready to slice or re-slice as work lands, an approved bug report, GitHub issue, or explicit requirement needs a spec, or specs need splitting, merging, re-scoping, or killing before pickup.
 disable-model-invocation: false
 ---
 
-Slice an intent into thin, session-sized **specs**: what each slice delivers plus its acceptance criteria, nothing more. How a slice gets built is not decided here.
+Write thin, session-sized **specs** from an intent or an approved standalone source: what each slice delivers plus its acceptance criteria, nothing more. How a slice gets built is not decided here.
 
-## 1. Ground in the intent
+## 1. Ground in the source
 
-Read the intent, especially Stop criteria, Constraints & decided, Out of scope, and Open questions. Then survey the existing specs and what blocks what, to see what is done, in progress, or already specced. Done when you can name the **frontier**: the work whose blockers are done or absent.
+For intent-backed work, read the intent, especially Stop criteria, Constraints & decided, Out of scope, and Open questions. Then survey the existing specs and what blocks what, to see what is done, in progress, or already specced.
+
+For standalone work, read the bug report, GitHub issue, or explicit requirement. Establish the expected result, constraints, exclusions, and unresolved questions from that source and the relevant existing work. Use the user's approval when already explicit; otherwise confirm the source requirement with them before slicing. A standalone spec needs neither an intent nor a project.
+
+Done when the source is identified, its requirements are clear enough to slice, and you can name the **frontier**: the work whose blockers are done or absent.
 
 ## 2. Slice the frontier
 
 Cut the frontier into **vertical slices**: each spec delivers a narrow but complete, independently verifiable path through the work, never a horizontal layer ("all the models", "all the endpoints") that proves nothing on its own. Size each slice to one session: one agent can plan, build, and verify it without a handoff. One task per slice: if the title needs an "and", it is two slices.
 
-Decomposition is progressive. Slice finely only at the frontier; leave work behind unfinished blockers as coarse placeholders, a title and a sentence, until the frontier reaches it. An open question in the intent blocks the same way: work that depends on its answer stays a placeholder, and the question is answered when the frontier reaches it, not before. Returning to re-slice as work lands is the mechanism working, not a planning failure. Until a spec is picked up, it is malleable: split, merge, re-scope, or kill freely.
+Decomposition is progressive. Slice finely only at the frontier; leave work behind unfinished blockers as coarse placeholders, a title and a sentence, until the frontier reaches it. An open question in the source blocks the same way: work that depends on its answer stays a placeholder, and the question is answered when the frontier reaches it, not before. Returning to re-slice as work lands is the mechanism working, not a planning failure. Until a spec is picked up, it is malleable: split, merge, re-scope, or kill freely.
 
 Done when every piece of the frontier sits in exactly one slice, each slice is vertical and session-sized, and everything behind an unfinished blocker is a placeholder.
 
@@ -29,7 +33,7 @@ Spec template:
 ```markdown
 # <What this slice delivers, in one imperative sentence>
 
-Intent: <the intent this slice serves>
+Source: <link or reference to the intent or approved standalone report or requirement>
 
 ## Delivers
 
@@ -41,4 +45,4 @@ Intent: <the intent this slice serves>
 - <...>
 ```
 
-Done when every approved frontier slice has a spec from the template, every placeholder is still a title and a sentence, and the blocking order between them is stated once, outside the spec bodies. A spec body is the requirements contract for one slice; ordering does not belong in it.
+Present the completed specs for approval, including their acceptance criteria. Done when every approved frontier slice has a user-approved spec from the template, every placeholder is still a title and a sentence, and the blocking order between them is stated once, outside the spec bodies. A spec body is the requirements contract for one slice; ordering does not belong in it.
