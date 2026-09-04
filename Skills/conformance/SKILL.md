@@ -1,6 +1,6 @@
 ---
 name: conformance
-description: Audit a change set against the requirement that originated it. Use when the user asks whether a branch, PR, or revision range satisfies its issue, ticket, spec, or PRD. Not a code review; never run unasked.
+description: Audit a change set against the requirement that originated it. Not a code review; never run unasked.
 disable-model-invocation: true
 ---
 

@@ -8,11 +8,11 @@ Run a failure down to a stated cause with the evidence that selected it, then pr
 
 ## 1. Decide whether to investigate
 
-A report that pins both the faulting location and the mechanism, a stack trace into a line whose defect you can name on sight, needs no investigation: repair and go to step 6. Anything less, including a failure with several plausible causes, gets the full procedure.
+A report that pins both the faulting location and the mechanism, a stack trace into a line whose defect you can name on sight, takes the direct path: build the loop in step 2, skip steps 3 to 5, repair, and go to step 6. On that path the loop is the bare case, its first red run is the saved symptom, and the report's trace is the observation that selected the cause; record it as the probe. Anything less, including a failure with several plausible causes, gets the full procedure.
 
 Read the project's glossary, local context document, and ADRs for the affected area, so candidates use its terms and do not reopen settled decisions. For unfamiliar code, dispatch read-only `scout` subagents in one batch to map the implicated path, its callers, and its tests.
 
-Done when the case is labeled direct repair or investigation, and for an investigation the implicated path and its entry points are mapped.
+Done when the case is labeled direct path or investigation, and for an investigation the implicated path and its entry points are mapped.
 
 ## 2. Build the loop
 
@@ -72,7 +72,7 @@ Done when one candidate's prediction has held and the competitors' have failed o
 
 ## 6. Lock the repair down
 
-A change that turns the loop green without a probe that showed why is a workaround; go back to step 5. A repair that needs its route written down gets one by `plan` first.
+A change that turns the loop green without a probe that showed why is a workaround; go back to step 5. On the direct path the probe is the report's trace, and it holds only while the loop went red at the named line and green after the one repair; a repair that needs more than that has left the direct path, so go to step 3. A repair that needs its route written down gets one by `plan` first.
 
 `software-design` finds the **real seam**: the narrowest test location that still recreates the callers, interactions, and sequence the bare case needs, or that none exists. `test-quality` shapes the regression test there.
 

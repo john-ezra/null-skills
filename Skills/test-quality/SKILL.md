@@ -6,6 +6,13 @@ disable-model-invocation: false
 
 Each test names the promise it guards and the one mistake it would catch, and stays green through any internal rewrite that keeps that promise. Where a production seam, port, or adapter belongs is `software-design`'s decision, never a side effect of wanting a test.
 
+## Mode
+
+Pick one before step 1; the request decides it.
+
+- **Judging.** A review of existing tests, a verdict on a suite, or the question whether something needs a test. Steps 1 to 5 are the checks, and every test in scope is held to each step's done line. Run the suite to see what is red and green, and change nothing: no test edits, no source edits, no deletions, no mistake planted in the code under test. Step 7's sensitivity proof becomes a prediction, the mistake the test would survive and why, and a test that fails a check becomes a finding naming the step it failed. Deliver the report; edits wait for a request.
+- **Writing.** Adding, changing, or pruning tests, a regression test for a defect, or test-first work, all at the user's request. All seven steps, with edits.
+
 ## 1. Establish what is promised
 
 Read the interface docs or spec, the task or defect report, the nearby implementation, and the existing tests; use the project's domain terms and take its recorded architectural decisions as fixed. For every candidate test write what a caller can rely on, the one concrete mistake it exists to catch ("the cap check uses `<` instead of `<=`"), and the observation that tells the two apart; discard any candidate that cannot name a distinct promise and a believable mistake. If the promise is unclear because the API's shape is unchosen, stop: the product question goes through `shape`, `intent`, and `spec`, the interface question through `software-design`, before any testable behavior is invented.
@@ -48,11 +55,11 @@ Done when you have watched the test fail and then pass and the implementation is
 
 ## 7. Prove sensitivity and prune
 
-Run the changed test and the relevant suite. For any test written after its implementation, and any whose sensitivity you doubt, put the named mistake into the source, watch the test fail, restore the source, and watch it pass. A test that stays green under its own mistake goes.
+Run the changed test and the relevant suite. For any test written after its implementation, and any whose sensitivity you doubt, put the named mistake into the source, watch the test fail, restore the source, and watch it pass. A test that stays green under its own mistake goes. In judging mode the proof is not run; state the mistake the test is predicted to survive and the assertion that lets it.
 
 Do not force a focused failing test when it would cost disproportionate harness work, fragile doubles, state that exists only in production, disruption of unrelated fixtures, or an assertion less faithful than the failure the user saw. Say so before touching source, name the closest runnable reproduction or regression check instead, and still run the strongest available behavioral proof.
 
-Delete tests that survive their mistake, duplicate stronger coverage, or protect no observable promise; keep fixtures and parameter tables only where they make the protected behavior easier to read.
+Delete tests that survive their mistake, duplicate stronger coverage, or protect no observable promise; keep fixtures and parameter tables only where they make the protected behavior easier to read. In judging mode each of these is a finding, not a deletion.
 
 Done when every changed test passes, each has shown it catches its named mistake, and every remaining test in scope protects something no other test protects.
 
@@ -63,7 +70,7 @@ For a testing decision, review, or plan, in order:
 1. **Behavior and risk map.** Per retained test: the caller-visible promise, the named mistake, and the observation that separates them.
 2. **Test design.** The entry point, the chosen data, where the expected value came from, and any grouped assertions or parameter tables with the one contract they share.
 3. **Collaborator strategy.** Each collaborator's rung, which permitted condition justified any stand-in for an external system, and the contractual external effect behind any asserted interaction.
-4. **Evidence.** Whether a pre-change failure was observed, how sensitivity was proven, the focused and suite commands run, and their actual results.
+4. **Evidence.** Whether a pre-change failure was observed, how sensitivity was proven or, in judging mode, the mistake each test is predicted to survive, the focused and suite commands run, and their actual results.
 5. **Exclusions and pruning.** Cases omitted or removed, each with its reason: duplicate, structural, metric-only, or weak signal.
 6. **Design routing.** Any seam or interface question that arose, as a `software-design` decision made or still owed, never one the tests settled.
 

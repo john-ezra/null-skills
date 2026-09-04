@@ -1,10 +1,10 @@
 ---
 name: natural-english
-description: Use when about to write an explanation, a document, or a reply longer than a few paragraphs.
+description: Strip machine-writing tells from prose and give it a human voice. Use when writing or revising a document, README, changelog, report, PR body, or any file whose content is prose, or when asked to polish, humanize, or rewrite text.
 disable-model-invocation: false
 ---
 
-Every explanation, document, or reply longer than a few paragraphs gets two edits before it goes out. Strip what marks it as machine-written, then give it a human voice. Removing tells alone does not satisfy this skill. Docs, summaries, and generated files with prose in them count.
+Prose bound for a document or file, or handed over to be polished, gets two edits before it goes out. Strip what marks it as machine-written, then give it a human voice. Removing tells alone does not satisfy this skill. Docs, summaries, reports, and generated files with prose in them count; an ordinary chat reply does not, unless the user asks for the treatment.
 
 ## Process
 
@@ -13,9 +13,10 @@ Every explanation, document, or reply longer than a few paragraphs gets two edit
 3. Voice. Run every voice test on the rewritten text. Done when each of the six has either changed the text or left it alone for a named reason, an absent trigger or a register that rules it out.
 4. Audit. Reread and put one question to the result: what here would still tell a reader a machine wrote it? Fix whatever answers it. Done when the question has no answer.
 
-Hold these through steps 2 to 4.
+Hold these through steps 2 to 4. The first two outrank every catalogue entry and voice test; when a fix would break either, the fix is not made.
 
-- Meaning stays. Add no claim, drop no claim, flip no truth value. When a fix calls for a source, a number, or a mechanism, use one you have; with none in hand, delete the sentence instead of inventing one.
+- Meaning stays. No claim about the subject changes truth value. A sentence that carries no fact may go, and a judgment you hold may be added; a fact you do not have is never added. When a fix calls for a source, a number, or a mechanism, use one you have; with none in hand, delete the sentence.
+- Only your own text. The catalogue and the voice tests apply to prose you are writing now. Quotations, code, commands and their output, file contents, templates, and anything the user or a tool supplied are reproduced byte for byte, dashes and curly quotes included.
 - The author's register stays. Formal, casual, terse, or technical, the voice tests adjust within it and never override it.
 - A fix that trips another entry is not done. Swapping a dash for parentheses is the usual case.
 

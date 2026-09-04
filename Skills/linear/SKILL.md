@@ -75,12 +75,18 @@ Inline image in a comment:
 linear issue comment add WEB-12 --attach ./screenshot.png
 ```
 
+## Writes
+
+- **Confirm the target first.** With no `.linear.toml` at the repo root, a write lands in whatever workspace `linear auth default` last set; pass `--workspace <slug>` and `--team <key>` on every write instead of trusting it. Then confirm the identifier is the thing you mean: `linear issue view WEB-12 --json` and read the title before `issue update`, `comment add`, or `relation add` touches it.
+- **Replace a body from its current version.** `document update --content-file` and the `projectUpdate(content:)` fallback replace the whole body, so a draft written from anything but the current body erases edits made in Linear. Fetch it (`linear document view <id> --json`; for a project overview, query `project(id:) { content }` through `linear api`), make the edit on that copy, write it, then fetch again and diff against what you sent. `document update` stops when inline comments would lose their anchors; `--force` overrides, and only after the user says so.
+
 ## Traps
 
 - `issue comment create` does not exist; the verb is `add`.
 - `issue start` creates and checks out a git branch as a side effect. Move state with `issue update --state`.
 - `issue attach` makes a sidebar link and never renders an image inline; `comment add --attach` does.
 - `project update` has no `--content` or `--content-file`. Changing an overview after creation is the GraphQL fallback below.
+- `project view` has no `--json`; a project's overview is read through the GraphQL fallback.
 - `project --description` is capped at 255 characters by the API; the overview (`--content-file`) is not.
 - `issue query --state` and `issue list --state` filter by state type, never by name: `Ideas` and `Backlog` are both `backlog`, `Todo` is `unstarted`, `In Preparation`, `In Flight`, and `In Review` are all `started`. Filter by type, then read `state.name` in the JSON.
 - `--no-pager` exists only on `issue list` and `issue query`; other commands error on it.
@@ -88,7 +94,7 @@ linear issue comment add WEB-12 --attach ./screenshot.png
 
 ## Reference
 
-Every command's full help is in [references/commands.md](references/commands.md), one file per command. Curated examples for initiatives, labels, projects, and bulk operations are in [references/organization-features.md](references/organization-features.md). `linear <command> <subcommand> --help` is always current.
+`linear <command> --help` lists a command's subcommands and `linear <command> <subcommand> --help` its flags; both are the installed version's own text, so nothing here repeats them. The commands are `api`, `auth`, `config`, `cycle`, `document`, `initiative`, `initiative-update`, `issue`, `label`, `milestone`, `project`, `project-update`, `schema`, `team`, and `user`. Curated examples for initiatives, labels, projects, and bulk operations are in [references/organization-features.md](references/organization-features.md).
 
 ## GraphQL fallback
 
